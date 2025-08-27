@@ -1,0 +1,9 @@
+{
+	"name": "testeventADF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "7f1c2a03-b34d-4b76-86d4-c6888c0d6bae",
+		"tenantId": "1a5dd941-b7da-49e9-8bc9-0927d7f8befd"
+	}
+}
