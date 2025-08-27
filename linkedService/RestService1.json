@@ -4,7 +4,7 @@
 		"annotations": [],
 		"type": "RestService",
 		"typeProperties": {
-			"url": "https://api.loganalytics.io/v1/workspaces//",
+			"url": "https://api.loganalytics.io/v1/workspaces/2a07c615-cd2b-4d42-b09d-245f3a3e5102/",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}
