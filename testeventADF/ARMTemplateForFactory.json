@@ -49,7 +49,7 @@
 							},
 							"url": "https://login.microsoftonline.com/1a5dd941-b7da-49e9-8bc9-0927d7f8befd/oauth2/v2.0/token",
 							"body": {
-								"value": "@pipeline().parameters.pl_auth",
+								"value": "@concat(pipeline().parameters.pl_auth)",
 								"type": "Expression"
 							},
 							"authentication": {
