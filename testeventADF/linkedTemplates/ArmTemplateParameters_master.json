@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "testeventADF"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"value": ""
+		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://api.loganalytics.io/v1/workspaces/2a07c615-cd2b-4d42-b09d-245f3a3e5102/"
+		},
+		"RestService1_properties_typeProperties_aadResourceId": {
+			"value": "https://api.loganalytics.io/"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
