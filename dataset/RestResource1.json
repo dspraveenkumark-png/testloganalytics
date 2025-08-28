@@ -9,7 +9,7 @@
 		"type": "RestResource",
 		"typeProperties": {
 			"relativeUrl": {
-				"value": "query?query=ADFActivityRun | where Level in (```Error```)",
+				"value": "query?query=ADFActivityRun | where Level in (```Error```) |  project TimeGenerated,Category",
 				"type": "Expression"
 			}
 		},
