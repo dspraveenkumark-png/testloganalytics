@@ -8,7 +8,7 @@
 		"annotations": [],
 		"type": "RestResource",
 		"typeProperties": {
-			"relativeUrl": "query"
+			"relativeUrl": "query?query=union * | where TimeGenerated > ago(1h) | summarize count() by Type, TenantId"
 		},
 		"schema": []
 	}
