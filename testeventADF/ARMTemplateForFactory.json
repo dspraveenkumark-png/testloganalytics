@@ -31,6 +31,121 @@
 			"properties": {
 				"activities": [
 					{
+						"name": "GetBearerAccessToken",
+						"type": "WebActivity",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {
+								"Content-Type": "application/x-www-form-urlencoded"
+							},
+							"url": "https://login.microsoftonline.com/1a5dd941-b7da-49e9-8bc9-0927d7f8befd/oauth2/v2.0/token",
+							"body": {
+								"value": "@concat(pipeline().parameters.pl_auth)",
+								"type": "Expression"
+							},
+							"authentication": {
+								"type": "MSI",
+								"resource": "https://api.loganalytics.io/"
+							}
+						}
+					},
+					{
+						"name": "GetLogAnalyticsDataToJSON",
+						"type": "Copy",
+						"dependsOn": [
+							{
+								"activity": "GetBearerAccessToken",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"additionalHeaders": {
+									"Content_Type": {
+										"value": "application/json",
+										"type": "Expression"
+									},
+									"Authorization": {
+										"value": "@concat('Bearer ',activity('GetBearerAccessToken').output.access_token)",
+										"type": "Expression"
+									}
+								},
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobStorageWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResource1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Json1",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"parameters": {
+					"pl_auth": {
+						"type": "string"
+					}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResource1')]",
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/pipeline1_copy2')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
 						"name": "Web1",
 						"type": "WebActivity",
 						"dependsOn": [],
@@ -83,7 +198,7 @@
 								"httpRequestTimeout": "00:01:40",
 								"requestInterval": "00.00:00:00.010",
 								"requestMethod": "POST",
-								"requestBody": "{\n  \"query\": \".show tables\"\n}",
+								"requestBody": "{\n  \"query\": \"ADFActivityRun | where Level == \\\"Error\\\"\"\n}",
 								"additionalHeaders": {
 									"Content_Type": {
 										"value": "application/json",
@@ -176,7 +291,10 @@
 				"annotations": [],
 				"type": "RestResource",
 				"typeProperties": {
-					"relativeUrl": "query"
+					"relativeUrl": {
+						"value": "query?query=ADFActivityRun | where Level in (```Error```) |  project TimeGenerated,Category",
+						"type": "Expression"
+					}
 				},
 				"schema": []
 			},
