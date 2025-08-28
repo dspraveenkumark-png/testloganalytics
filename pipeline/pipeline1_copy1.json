@@ -3,7 +3,7 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Web1",
+				"name": "GetBearerAccessToken",
 				"type": "WebActivity",
 				"dependsOn": [],
 				"policy": {
@@ -35,7 +35,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Web1",
+						"activity": "GetBearerAccessToken",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -61,7 +61,7 @@
 								"type": "Expression"
 							},
 							"Authorization": {
-								"value": "@concat('Bearer ',activity('Web1').output.access_token)",
+								"value": "@concat('Bearer ',activity('GetBearerAccessToken').output.access_token)",
 								"type": "Expression"
 							}
 						},
